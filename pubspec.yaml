@@ -1,0 +1,5 @@
+name:  game_of_life
+description:  A sample application
+
+dependencies:
+  unittest: { sdk: unittest }
