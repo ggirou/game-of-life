@@ -8,48 +8,45 @@ import '../lib/game_of_life.dart';
 part 'grid.dart';
 
 int lifeTime = 1000;
+DivElement canvasPanel = query("#canvasPanel");
 CanvasElement canvas = query("#canvas");
 Grid grid = new Grid(canvas);
 Engine engine = new Engine();
 Generation generation = new Generation();
 
+InputElement clearButton = query("#clearButton");
+InputElement randomButton = query("#randomButton");
 InputElement speed = query("#speed");
 SpanElement speedValue = query("#speedValue");
 int generationCount = 0;
 SpanElement generationValue = query("#generationValue");
 SpanElement cellsValue = query("#cellsValue");
 
-Timer timer = new Timer(0, (t) => null);
+Timer generationTimer = new Timer(0, (t) => null);
+Timer randomTimer = new Timer(0, (t) => null);
 
 void main() {
+  // TODO: localstorage, fileapi, webcomponent
+
+  window.on.load.add(_autoResizeCanvas);
+  window.on.resize.add(_autoResizeCanvas);
+  clearButton.on.click.add(_clear);
+  randomButton.on.mouseDown.add(_randomStart);
+  randomButton.on.mouseUp.add(_randomStop);
+  randomButton.on.mouseOut.add(_randomStop);
   speed.on.change.add(onSpeedChange);
   
-  grid.resize(50, 50);
-  grid.cellClick = (Cell current, {Cell startCell}) {
-    if(startCell == null) {
-      generation[current] = !generation[current];
-    } else {
-      generation[current] = generation[startCell];
-    }
-    grid[current] = generation[current];
-  };
+  grid.cellClick = gridCellClick;
   
-  for(int i = 0; i < 500; i++) {
-    generation[randomCell()] = true;
-  }
-  drawGeneration();
-
   animate();
 }
 
-animate() {
-  window.requestAnimationFrame(_animate);
-}
+animate() => window.requestAnimationFrame(_animate);
 
 _animate(num time) {
-  timer.cancel();
+  generationTimer.cancel();
   if(lifeTime > 0) {
-    timer = new Timer(max(0, lifeTime - (time.toInt() % lifeTime)), (t) {
+    generationTimer = new Timer(max(0, lifeTime - (time.toInt() % lifeTime)), (t) {
       nextGeneration();
       animate();
     });
@@ -58,18 +55,30 @@ _animate(num time) {
 
 nextGeneration() {
   generation = engine.nextGeneration(generation);
-  generationCount++;
+  if(generation.aliveCells.length > 0) {
+    generationCount++;
+  }
   drawGeneration();
 }
 
 drawGeneration() {
-  generationValue.text = generationCount.toString();
-  cellsValue.text = generation.aliveCells.length.toString(); 
-  generation.deadCells.forEach((cell) => grid.clearCell(cell));
-  generation.aliveCells.forEach((cell) => grid.drawCell(cell, "red"));
+  refreshInfo(); 
+  grid.drawGeneration(generation);
 }
 
-Cell randomCell() => new Cell(new Random().nextInt(50), new Random().nextInt(50));
+void refreshInfo() {
+  generationValue.text = generationCount.toString();
+  cellsValue.text = generation.aliveCells.length.toString();
+}
+
+gridCellClick(Cell current, {Cell startCell}) {
+  if(startCell == null) {
+    generation[current] = !generation[current];
+  } else {
+    generation[current] = generation[startCell];
+  }
+  grid[current] = generation[current];
+}
 
 onSpeedChange(e) {
   int value = speed.valueAsNumber.toInt();
@@ -87,4 +96,32 @@ onSpeedChange(e) {
   
   lifeTime = (1000 / x).toInt();
   animate(); 
+}
+
+_clear(e) {
+  generation = new Generation();
+  generationCount = 0;
+  grid.clear();
+  drawGeneration();
+}
+
+_randomStart(e) => randomTimer = new Timer.repeating(100, (t) {
+  num number = grid.cellWidth * grid.cellHeight * 0.01;
+  for(int i = 0; i < number; i++) {
+    Cell cell = _randomCell();
+    generation[cell] = true;
+    grid.drawCell(cell);
+    refreshInfo();
+  }
+});
+_randomStop(e) => randomTimer.cancel();
+Cell _randomCell() => new Cell(new Random().nextInt(grid.cellWidth), new Random().nextInt(grid.cellHeight));
+
+_autoResizeCanvas(e) {
+  canvas.style.display = "none";
+  canvas..width = canvasPanel.offsetWidth - 30 ..height = canvasPanel.offsetHeight - 30;
+  canvas.style.display = "block";
+  
+  grid.clear();
+  grid.drawGeneration(generation);
 }

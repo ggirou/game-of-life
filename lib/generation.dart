@@ -20,18 +20,6 @@ class Generation {
     return cells;
   }
   
-//  bool isAlive(Cell cell) => _aliveCells.contains(cell);
-//  
-//  setAlive(Cell cell) {
-//    _aliveCells.add(cell);
-//    _deadCells.remove(cell);
-//  }
-//  
-//  setDead(Cell cell) {
-//    _aliveCells.remove(cell);
-//    _deadCells.add(cell);
-//  }
-  
   bool operator [](Cell cell) => _aliveCells.contains(cell);
   void operator []=(Cell cell, bool value) {
     if(value) {

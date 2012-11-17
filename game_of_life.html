@@ -7,19 +7,28 @@
     <link rel="stylesheet" href="game_of_life.css">
   </head>
   <body>
-    <h1>Conway's Game of Life</h1>
-    <p>
+    <h1 id="title">Conway's Game of Life</h1>
+    <p id="infoBar">
       Generation: <span id="generationValue"></span>
       # Cells: <span id="cellsValue"></span>
+      <input id="clearButton" type="button" value="Clear" title="Kill everyone!" />
+      <input id="randomButton" type="button" value="Random" title="Hold random button to create live cells" />
     </p>
 
-    <p>
-      <label for="speed">Speed: </label>
-      <input id="speed" type="range" name="Speed" min="-1" max="10" step="1" value="2" style="width: 500px">
-      <span id="speedValue">1x</span>
-    </p>
+	 <div id="toolbar">
+	    <p id="speedPanel">
+	      <label for="speed">Speed: </label>
+	      <input id="speed" type="range" name="Speed" min="-1" max="10" step="1" value="2">
+	      <span id="speedValue">1x</span>
+	    </p>
+		  <p id="patternPanel">
+		    <!-- TODO: pattern -->
+		  </p>
+    </div>
     
-    <canvas id="canvas" width="256" height="256"></canvas>
+    <div id="canvasPanel">
+      <canvas id="canvas" width="256" height="256"></canvas>
+    </div>
 
     <script type="application/dart" src="web/game_of_life.dart"></script>
     <script src="https://dart.googlecode.com/svn/branches/bleeding_edge/dart/client/dart.js"></script>

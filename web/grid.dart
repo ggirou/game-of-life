@@ -2,46 +2,45 @@ part of game_of_life_ui;
 
 typedef CellClick(Cell currentCell, {Cell startCell});
 
-class Grid { //extends EventTarget
+class Grid {
   CanvasElement _canvas;
   CanvasRenderingContext2D _context;
   num cellSize = 10;
   num lineWidth = 1;
-  num _gridWidth = 50;
-  num _gridHeight = 50;
+  String backgroundColor = "white";
+  String lineColor = "white";
   
   Cell _startMouseDown;
   Cell _currentMouseMove;
   CellClick cellClick;
 
-  Grid(CanvasElement canvas) { //: super.internal()
+  Grid(CanvasElement canvas) {
     _canvas = canvas;
     _canvas.on.mouseDown.add(_onMouseDown);
     _canvas.on.mouseUp.add(_onMouseUp);
     _canvas.on.mouseMove.add(_onMouseMove);
     
     _context = canvas.getContext("2d");
-    _gridWidth = _canvas.width / cellSize;
-    _gridHeight = _canvas.height / cellSize;
-  }
-
-  resize(num gridWidth, num gridHeight) {
-    _gridWidth = gridWidth;
-    _gridHeight = gridHeight;
-    _canvas.width = cellSize * _gridWidth + 1;
-    _canvas.height = cellSize * _gridHeight + 1;
-    drawGrid();
+    clear();
   }
 
   void operator []=(Cell cell, bool value) => value ? drawCell(cell, "red") : clearCell(cell);
 
-  drawCell(Cell cell, [String color = "white"]) {
-    _context
-    ..beginPath()
-    ..rect(cell.x * cellSize + lineWidth, cell.y * cellSize + lineWidth, cellSize - lineWidth * 2, cellSize - lineWidth * 2)
-    ..fillStyle = color
-    ..closePath()
-    ..fill();
+  drawCell(Cell cell, [String color = "red"]) {
+    _context..beginPath()
+            ..rect(cell.x * cellSize + lineWidth, cell.y * cellSize + lineWidth, cellSize - lineWidth * 2, cellSize - lineWidth * 2)
+            ..fillStyle = color
+            ..closePath()
+            ..fill();
+  }
+  
+  clear() {
+    _context..beginPath()
+            ..rect(0, 0, _canvas.width, _canvas.height)
+            ..fillStyle = backgroundColor
+            ..closePath()
+            ..fill();
+    drawGrid();
   }
   
   clearCell(Cell cell) => drawCell(cell, "white");
@@ -56,7 +55,18 @@ class Grid { //extends EventTarget
     }
   }
 
-  drawLine(num x1, num y1, num x2, num y2) => _context..beginPath()..moveTo(x1, y1)..lineTo(x2, y2)..lineWidth = lineWidth ..stroke();
+  drawLine(num x1, num y1, num x2, num y2) {
+    _context..beginPath()
+            ..strokeStyle = lineColor 
+            ..moveTo(x1, y1)
+            ..lineTo(x2, y2)
+            ..lineWidth = lineWidth ..stroke();
+  }
+  
+  drawGeneration(Generation generation) {
+    generation.deadCells.forEach((cell) => grid.clearCell(cell));
+    generation.aliveCells.forEach((cell) => grid.drawCell(cell, "red"));
+  }
   
   _onMouseDown(MouseEvent event) =>_startMouseDown = _mouseEventToCell(event);
   
@@ -67,6 +77,7 @@ class Grid { //extends EventTarget
   }
 
   _onMouseMove(MouseEvent event) {
+    // FIX: vérifier que la souris est bien DOWN
     if(_startMouseDown != null) {
       var cell = _mouseEventToCell(event);
       if(_currentMouseMove != cell) {
@@ -92,20 +103,6 @@ class Grid { //extends EventTarget
     return new Cell(x, y);
   }
 
-//  GridEvents get on => new GridEvents(this);
-
-  get gridWidth => _gridWidth;
-  get gridHeight => _gridHeight;
+  int get cellWidth => (_canvas.width / cellSize).ceil().toInt();
+  int get cellHeight => (_canvas.height / cellSize).ceil().toInt();
 }
-
-//class GridEvents extends Events {
-//  GridEvents(EventTarget _ptr) : super(_ptr);
-//
-//  EventListenerList get cellClick => this['cellClick'];
-//}
-//
-//class CellClickEvent extends Event {
-//  CellClickEvent(this.cell) : super.internal();
-//  
-//  Cell cell;
-//}
