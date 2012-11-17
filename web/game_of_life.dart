@@ -13,6 +13,7 @@ CanvasElement canvas = query("#canvas");
 Grid grid = new Grid(canvas);
 Engine engine = new Engine();
 Generation generation = new Generation();
+bool clickState = true;
 
 InputElement clearButton = query("#clearButton");
 InputElement randomButton = query("#randomButton");
@@ -26,10 +27,12 @@ Timer generationTimer = new Timer(0, (t) => null);
 Timer randomTimer = new Timer(0, (t) => null);
 
 void main() {
+  // FIX: input range
   // TODO: localstorage, fileapi, webcomponent
 
   window.on.load.add(_autoResizeCanvas);
   window.on.resize.add(_autoResizeCanvas);
+  window.on.mouseWheel.add(_zoom);
   clearButton.on.click.add(_clear);
   randomButton.on.mouseDown.add(_randomStart);
   randomButton.on.mouseUp.add(_randomStop);
@@ -73,9 +76,9 @@ void refreshInfo() {
 
 gridCellClick(Cell current, {Cell startCell}) {
   if(startCell == null) {
-    generation[current] = !generation[current];
+    clickState = generation[current] = !generation[current];
   } else {
-    generation[current] = generation[startCell];
+    generation[current] = clickState;
   }
   grid[current] = generation[current];
 }
@@ -122,6 +125,13 @@ _autoResizeCanvas(e) {
   canvas..width = canvasPanel.offsetWidth - 30 ..height = canvasPanel.offsetHeight - 30;
   canvas.style.display = "block";
   
+  grid.clear();
+  grid.drawGeneration(generation);
+}
+
+_zoom(WheelEvent e) {
+  int delta = (e.detail != 0 ? e.detail / 3 : e.deltaY / 120).toInt();
+  grid.scale = max(1 / 8, min(grid.scale * (delta < 0 ? -0.5 : 2) * delta, 8));
   grid.clear();
   grid.drawGeneration(generation);
 }

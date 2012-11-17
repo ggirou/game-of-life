@@ -9,6 +9,7 @@ class Grid {
   num lineWidth = 1;
   String backgroundColor = "white";
   String lineColor = "white";
+  num _scale = 1;
   
   Cell _startMouseDown;
   Cell _currentMouseMove;
@@ -27,16 +28,20 @@ class Grid {
   void operator []=(Cell cell, bool value) => value ? drawCell(cell, "red") : clearCell(cell);
 
   drawCell(Cell cell, [String color = "red"]) {
+    num lineWidth = lineWidth * scale;
     _context..beginPath()
-            ..rect(cell.x * cellSize + lineWidth, cell.y * cellSize + lineWidth, cellSize - lineWidth * 2, cellSize - lineWidth * 2)
+            ..rect(cell.x * cellSize, cell.y * cellSize, cellSize, cellSize)
             ..fillStyle = color
-            ..closePath()
-            ..fill();
+            ..fill()
+            ..lineWidth = lineWidth
+            ..strokeStyle = lineColor
+            ..stroke()
+            ..closePath();
   }
   
   clear() {
     _context..beginPath()
-            ..rect(0, 0, _canvas.width, _canvas.height)
+            ..rect(0, 0, width, height)
             ..fillStyle = backgroundColor
             ..closePath()
             ..fill();
@@ -46,12 +51,14 @@ class Grid {
   clearCell(Cell cell) => drawCell(cell, "white");
   
   drawGrid() {
-    for(num x = 0; x < _canvas.width; x+= cellSize) {
-      drawLine(x, 0, x, _canvas.height);
-    }
-
-    for(num y = 0; y < _canvas.height; y+= cellSize) {
-      drawLine(0, y, _canvas.width, y);
+    if(lineColor != backgroundColor) {
+      for(num x = 0; x < width; x+= cellSize) {
+        drawLine(x, 0, x, height);
+      }
+  
+      for(num y = 0; y < height; y+= cellSize) {
+        drawLine(0, y, width, y);
+      }
     }
   }
 
@@ -60,7 +67,7 @@ class Grid {
             ..strokeStyle = lineColor 
             ..moveTo(x1, y1)
             ..lineTo(x2, y2)
-            ..lineWidth = lineWidth ..stroke();
+            ..lineWidth = lineWidth * scale ..stroke();
   }
   
   drawGeneration(Generation generation) {
@@ -98,11 +105,20 @@ class Grid {
   }
   
   _mouseEventToCell(MouseEvent event) {
-    var x = ((event.pageX - _canvas.offsetLeft) / cellSize).toInt();
-    var y = ((event.pageY - _canvas.offsetTop) / cellSize).toInt();
+    int x = (event.offsetX / cellSize / scale).toInt();
+    int y = (event.offsetY / cellSize / scale).toInt();
     return new Cell(x, y);
   }
 
-  int get cellWidth => (_canvas.width / cellSize).ceil().toInt();
-  int get cellHeight => (_canvas.height / cellSize).ceil().toInt();
+  num get width => _canvas.width / scale;
+  num get height => _canvas.height / scale;
+  int get cellWidth => (width / cellSize).ceil().toInt();
+  int get cellHeight => (height / cellSize).ceil().toInt();
+  
+  num get scale => _scale;
+  set scale(num scale) {
+    print("Scale: $scale");
+    _context.scale(scale / _scale, scale / _scale);
+    _scale = scale;
+  }
 }

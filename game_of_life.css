@@ -2,6 +2,7 @@ html, body {height: 100%;}
 
 body {
   display: table;
+  position: relative;
   width: 100%; 
   background-color: #F8F8F8;
   font-family: 'Open Sans', sans-serif;
@@ -14,16 +15,22 @@ body {
   user-select: none;
 }
 
+canvas {
+  cursor:default;
+}
+
 p {
   color: #333;
 }
 
 #title, #infoBar, #canvasPanel {
   display: table-row;
+  position: relative;
 }
 
 #toolbar {
   display: table;
+  position: relative;
   width: 100%;
   table-layout: fixed;
 }
