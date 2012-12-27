@@ -28,7 +28,7 @@ class Grid {
   void operator []=(Cell cell, bool value) => value ? drawCell(cell, "red") : clearCell(cell);
 
   drawCell(Cell cell, [String color = "red"]) {
-    num lineWidth = lineWidth * scale;
+    num lineWidth = this.lineWidth * scale;
     _context..beginPath()
             ..rect(cell.x * cellSize, cell.y * cellSize, cellSize, cellSize)
             ..fillStyle = color
@@ -71,8 +71,8 @@ class Grid {
   }
   
   drawGeneration(Generation generation) {
-    generation.deadCells.forEach((cell) => grid.clearCell(cell));
-    generation.aliveCells.forEach((cell) => grid.drawCell(cell, "red"));
+    generation.deadCells.forEach((cell) => clearCell(cell));
+    generation.aliveCells.forEach((cell) => drawCell(cell, "red"));
   }
   
   _onMouseDown(MouseEvent event) =>_startMouseDown = _mouseEventToCell(event);
