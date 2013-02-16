@@ -1,7 +1,7 @@
 part of game_of_life_test;
 
 var engineTests = {
-                   "testNextGeneration": testNextGeneration, 
+                   "testNextGeneration": testNextGeneration,
                    "testProcessCell_1": testProcessCell_1,
                    "testProcessCell_2": testProcessCell_2,
                    "testProcessCell_3": testProcessCell_3,
@@ -18,7 +18,7 @@ class EngineSpy extends Mock implements Engine {
   Engine _real;
 
   EngineSpy() : this.original(new Engine());
-  
+
   EngineSpy.original(this._real) {
     when(callsTo('nextGeneration')).alwaysCall(_real.nextGeneration);
     when(callsTo('processCell')).alwaysCall(_real.processCell);
@@ -28,10 +28,10 @@ class EngineSpy extends Mock implements Engine {
 testNextGeneration() {
   // GIVEN
   Engine engine = new Engine();
-  
+
   GenerationMock currentGenerationMock = new GenerationMock();
   currentGenerationMock.when(callsTo('aliveCellsAndNeighbours')).alwaysReturn([new Cell(0, 0), new Cell(1, 0), new Cell(1, 1)]);
-  
+
   // WHEN
   engine.nextGeneration(currentGenerationMock);
 
@@ -79,24 +79,24 @@ void _testProcessCell(int aliveNeighbours, bool isAlive, [bool checkIsAlive]) {
   // GIVEN
   Engine engine = new Engine();
   Cell cell = new Cell(0, 0);
-  
+
   GenerationMock currentGenerationMock = new GenerationMock();
   GenerationMock nextGenerationMock = new GenerationMock();
   currentGenerationMock.when(callsTo('aliveNeighbours', cell)).thenReturn(aliveNeighbours);
   if(?checkIsAlive) {
     currentGenerationMock.when(callsTo('[]', cell)).thenReturn(checkIsAlive);
   }
- 
+
   // WHEN
   engine.processCell(currentGenerationMock, nextGenerationMock, cell);
-  
+
   // THEN
   currentGenerationMock.getLogs(callsTo('aliveNeighbours', cell), null, true).verify(happenedOnce);
   if(?checkIsAlive) {
     currentGenerationMock.getLogs(callsTo('[]', cell), null, true).verify(happenedOnce);
   }
   currentGenerationMock.getLogs().verify(neverHappened);
-  
+
   nextGenerationMock.getLogs(callsTo('[]=', cell, isAlive), null, true).verify(happenedOnce);
   nextGenerationMock.getLogs().verify(neverHappened);
 }

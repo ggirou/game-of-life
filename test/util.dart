@@ -8,7 +8,7 @@ final List<Cell> indexedPoint = [
     new Cell(-1,  1), new Cell(0,  1), new Cell(1,  1),
   ];
 
-final List<Set<Cell>> allNeighboursCombinations = _allNeighboursCombinations(); 
+final List<Set<Cell>> allNeighboursCombinations = _allNeighboursCombinations();
 List<Set<Cell>> _allNeighboursCombinations() {
   List<Set<Cell>> neighbours = new List();
   for(int i = 0x0; i <= 0xff; i++) {

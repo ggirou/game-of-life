@@ -1,5 +1,5 @@
 import 'dart:html';
-import 'dart:isolate';
+import 'dart:async';
 import 'dart:math';
 import '../lib/game_of_life.dart';
 import 'game_of_life_ui.dart';
@@ -32,7 +32,7 @@ void main() {
   randomButton.on.mouseDown.add((e) => _randomTimer = _randomStart());
   randomButton.on.mouseUp.add((e) => _randomTimer.cancel());
   randomButton.on.mouseOut.add((e) => _randomTimer.cancel());
-  
+
   animate();
 }
 
@@ -55,7 +55,7 @@ nextGeneration() {
 
 drawGeneration() {
   gridPresenter.drawGeneration();
-  refreshInfo(); 
+  refreshInfo();
 }
 
 refreshInfo() {
@@ -76,9 +76,9 @@ onSpeedChange(e) {
     x = 0.25 * pow(2, value);
     speedValue.text = "${x}x";
   }
-  
+
   lifeTime = (1000 / x).toInt();
-  animate(); 
+  animate();
 }
 
 _clear(e) {
@@ -90,7 +90,7 @@ _autoResizeCanvas(e) {
   canvas.style.display = "none";
   canvas..width = canvasPanel.offsetWidth - 30 ..height = canvasPanel.offsetHeight - 30;
   canvas.style.display = "block";
-  
+
   gridPresenter.refresh();
 }
 
@@ -100,7 +100,7 @@ _zoom(WheelEvent e) {
 }
 
 Timer _randomStart() => new Timer.repeating(100, (t) {
-  Random rand = new Random(new Date.now().millisecondsSinceEpoch);
+  Random rand = new Random(new DateTime.now().millisecondsSinceEpoch);
   int cellWidth = gridPresenter.grid.cellWidth;
   int cellHeight = gridPresenter.grid.cellHeight;
   num number = cellWidth * cellHeight * 0.01;

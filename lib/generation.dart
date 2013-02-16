@@ -3,14 +3,14 @@ part of game_of_life;
 class Generation {
   Set<Cell> _aliveCells = new Set();
   Set<Cell> _deadCells = new Set();
-  
+
   Generation();
   Generation.from(Iterable<Cell> aliveCell) : this._aliveCells = new Set.from(aliveCell);
-  
+
   int aliveNeighbours(Cell cell) {
-    return cell.neighbours().filter(_aliveCells.contains).length;
+    return cell.neighbours().where(_aliveCells.contains).length;
   }
-  
+
   Set<Cell> aliveCellsAndNeighbours() {
     Set cells = new Set();
     _aliveCells.forEach((cell) {
@@ -19,7 +19,7 @@ class Generation {
     });
     return cells;
   }
-  
+
   bool operator [](Cell cell) => _aliveCells.contains(cell);
   void operator []=(Cell cell, bool value) {
     if(value) {

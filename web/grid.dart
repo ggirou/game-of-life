@@ -10,7 +10,7 @@ class Grid {
   String backgroundColor = "white";
   String lineColor = "white";
   num _scale = 1;
-  
+
   Cell _startMouseDown;
   Cell _currentMouseMove;
   CellClick cellClick;
@@ -20,7 +20,7 @@ class Grid {
     _canvas.on.mouseDown.add(_onMouseDown);
     _canvas.on.mouseUp.add(_onMouseUp);
     _canvas.on.mouseMove.add(_onMouseMove);
-    
+
     _context = canvas.getContext("2d");
     clear();
   }
@@ -38,7 +38,7 @@ class Grid {
             ..stroke()
             ..closePath();
   }
-  
+
   clear() {
     _context..beginPath()
             ..rect(0, 0, width, height)
@@ -47,15 +47,15 @@ class Grid {
             ..fill();
     drawGrid();
   }
-  
+
   clearCell(Cell cell) => drawCell(cell, "white");
-  
+
   drawGrid() {
     if(lineColor != backgroundColor) {
       for(num x = 0; x < width; x+= cellSize) {
         drawLine(x, 0, x, height);
       }
-  
+
       for(num y = 0; y < height; y+= cellSize) {
         drawLine(0, y, width, y);
       }
@@ -64,19 +64,19 @@ class Grid {
 
   drawLine(num x1, num y1, num x2, num y2) {
     _context..beginPath()
-            ..strokeStyle = lineColor 
+            ..strokeStyle = lineColor
             ..moveTo(x1, y1)
             ..lineTo(x2, y2)
             ..lineWidth = lineWidth * scale ..stroke();
   }
-  
+
   drawGeneration(Generation generation) {
     generation.deadCells.forEach((cell) => clearCell(cell));
     generation.aliveCells.forEach((cell) => drawCell(cell, "red"));
   }
-  
+
   _onMouseDown(MouseEvent event) =>_startMouseDown = _mouseEventToCell(event);
-  
+
   _onMouseUp(MouseEvent event) {
     _startMouseDown = null;
     _dispatchCellClick(_mouseEventToCell(event));
@@ -92,7 +92,7 @@ class Grid {
       }
     }
   }
-  
+
   _dispatchCellClick(Cell cell) {
     if(cellClick != null && _currentMouseMove != cell) {
       _currentMouseMove = cell;
@@ -103,7 +103,7 @@ class Grid {
       }
     }
   }
-  
+
   _mouseEventToCell(MouseEvent event) {
     int x = (event.offsetX / cellSize / scale).toInt();
     int y = (event.offsetY / cellSize / scale).toInt();
@@ -114,7 +114,7 @@ class Grid {
   num get height => _canvas.height / scale;
   int get cellWidth => (width / cellSize).ceil().toInt();
   int get cellHeight => (height / cellSize).ceil().toInt();
-  
+
   num get scale => _scale;
   set scale(num scale) {
     print("Scale: $scale");

@@ -23,7 +23,7 @@ class GridPresenter {
   drawGeneration() {
     grid.drawGeneration(generation);
   }
-  
+
   refresh() {
     grid.clear();
     grid.drawGeneration(generation);
