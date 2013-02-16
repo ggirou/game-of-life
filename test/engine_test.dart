@@ -15,9 +15,11 @@ var engineTests = {
 class GenerationMock extends Mock implements Generation {}
 
 class EngineSpy extends Mock implements Engine {
-  Engine _real = new Engine();
+  Engine _real;
 
-  ControllerSpy() {
+  EngineSpy() : this.original(new Engine());
+  
+  EngineSpy.original(this._real) {
     when(callsTo('nextGeneration')).alwaysCall(_real.nextGeneration);
     when(callsTo('processCell')).alwaysCall(_real.processCell);
   }
@@ -25,24 +27,20 @@ class EngineSpy extends Mock implements Engine {
 
 testNextGeneration() {
   // GIVEN
-  EngineSpy engineSpy = new EngineSpy();
+  Engine engine = new Engine();
   
   GenerationMock currentGenerationMock = new GenerationMock();
   currentGenerationMock.when(callsTo('aliveCellsAndNeighbours')).alwaysReturn([new Cell(0, 0), new Cell(1, 0), new Cell(1, 1)]);
   
-  engineSpy.when(callsTo('processCell')).alwaysReturn(null);
-  
   // WHEN
-  engineSpy.nextGeneration(currentGenerationMock);
+  engine.nextGeneration(currentGenerationMock);
 
   // THEN
   currentGenerationMock.getLogs(callsTo('aliveCellsAndNeighbours'), null, true).verify(happenedOnce);
+  currentGenerationMock.getLogs(callsTo('aliveNeighbours', new Cell(0, 0)), null, true).verify(happenedOnce);
+  currentGenerationMock.getLogs(callsTo('aliveNeighbours', new Cell(1, 0)), null, true).verify(happenedOnce);
+  currentGenerationMock.getLogs(callsTo('aliveNeighbours', new Cell(1, 1)), null, true).verify(happenedOnce);
   currentGenerationMock.getLogs().verify(neverHappened);
-
-  engineSpy.getLogs(callsTo('processCell', currentGenerationMock, new isInstanceOf<Generation>(), new Cell(0, 0)), null, true).verify(happenedOnce);
-  engineSpy.getLogs(callsTo('processCell', currentGenerationMock, new isInstanceOf<Generation>(), new Cell(1, 0)), null, true).verify(happenedOnce);
-  engineSpy.getLogs(callsTo('processCell', currentGenerationMock, new isInstanceOf<Generation>(), new Cell(1, 1)), null, true).verify(happenedOnce);
-  engineSpy.getLogs().verify(neverHappened);
 }
 
 testProcessCell_1() {
