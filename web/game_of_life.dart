@@ -16,7 +16,7 @@ SpanElement speedValue = query("#speedValue");
 SpanElement generationValue = query("#generationValue");
 SpanElement cellsValue = query("#cellsValue");
 
-Timer generationTimer = Timer.run(() => null);
+Timer generationTimer = new Timer(Duration.ZERO, () {});
 
 void main() {
   // FIXME: input range
@@ -28,7 +28,7 @@ void main() {
   speed.onChange.listen(onSpeedChange);
   clearButton.onClick.listen(_clear);
 
-  Timer _randomTimer = Timer.run(() => null);
+  Timer _randomTimer = new Timer(Duration.ZERO, () {});
   randomButton.onMouseDown.listen((e) => _randomTimer = _randomStart());
   randomButton.onMouseUp.listen((e) => _randomTimer.cancel());
   randomButton.onMouseOut.listen((e) => _randomTimer.cancel());
@@ -42,7 +42,7 @@ _animate(num time) {
   generationTimer.cancel();
   if(lifeTime > 0) {
     Duration duration = new Duration(milliseconds: max(0, lifeTime - (time.toInt() % lifeTime)));
-    generationTimer = new Timer(duration, (t) {
+    generationTimer = new Timer(duration, () {
       nextGeneration();
       animate();
     });

@@ -1,3 +1,6 @@
+*.dart.js
+*.dart.js.deps
+*.dart.js.map
 pubspec.lock
 packages/
 test/packages/
