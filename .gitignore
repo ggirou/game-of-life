@@ -1,6 +1,5 @@
-.project
-.children
-.settings/
 pubspec.lock
 packages/
+test/packages/
+web/packages/
 
