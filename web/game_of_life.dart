@@ -16,22 +16,22 @@ SpanElement speedValue = query("#speedValue");
 SpanElement generationValue = query("#generationValue");
 SpanElement cellsValue = query("#cellsValue");
 
-Timer generationTimer = new Timer(0, (t) => null);
+Timer generationTimer = Timer.run(() => null);
 
 void main() {
   // FIXME: input range
   // TODO: localstorage, fileapi, webcomponent
 
-  window.on.load.add(_autoResizeCanvas);
-  window.on.resize.add(_autoResizeCanvas);
-  window.on.mouseWheel.add(_zoom);
-  speed.on.change.add(onSpeedChange);
-  clearButton.on.click.add(_clear);
+  window.onLoad.listen(_autoResizeCanvas);
+  window.onResize.listen(_autoResizeCanvas);
+  window.onMouseWheel.listen(_zoom);
+  speed.onChange.listen(onSpeedChange);
+  clearButton.onClick.listen(_clear);
 
-  Timer _randomTimer = new Timer(0, (t) => null);
-  randomButton.on.mouseDown.add((e) => _randomTimer = _randomStart());
-  randomButton.on.mouseUp.add((e) => _randomTimer.cancel());
-  randomButton.on.mouseOut.add((e) => _randomTimer.cancel());
+  Timer _randomTimer = Timer.run(() => null);
+  randomButton.onMouseDown.listen((e) => _randomTimer = _randomStart());
+  randomButton.onMouseUp.listen((e) => _randomTimer.cancel());
+  randomButton.onMouseOut.listen((e) => _randomTimer.cancel());
 
   animate();
 }
@@ -41,7 +41,8 @@ animate() => window.requestAnimationFrame(_animate);
 _animate(num time) {
   generationTimer.cancel();
   if(lifeTime > 0) {
-    generationTimer = new Timer(max(0, lifeTime - (time.toInt() % lifeTime)), (t) {
+    Duration duration = new Duration(milliseconds: max(0, lifeTime - (time.toInt() % lifeTime)));
+    generationTimer = new Timer(duration, (t) {
       nextGeneration();
       animate();
     });
@@ -99,7 +100,7 @@ _zoom(WheelEvent e) {
   gridPresenter.zoom(delta);
 }
 
-Timer _randomStart() => new Timer.repeating(100, (t) {
+Timer _randomStart() => new Timer.repeating(const Duration(milliseconds: 100), (t) {
   Random rand = new Random(new DateTime.now().millisecondsSinceEpoch);
   int cellWidth = gridPresenter.grid.cellWidth;
   int cellHeight = gridPresenter.grid.cellHeight;

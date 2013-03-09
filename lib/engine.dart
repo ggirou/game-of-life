@@ -4,7 +4,7 @@ class Engine {
   Cell min;
   Cell max;
 
-  Engine([this.min, this.max]);
+  Engine({this.min, this.max});
 
   Generation nextGeneration(Generation current) {
     Generation next = new Generation();

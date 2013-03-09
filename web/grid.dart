@@ -17,9 +17,9 @@ class Grid {
 
   Grid(CanvasElement canvas) {
     _canvas = canvas;
-    _canvas.on.mouseDown.add(_onMouseDown);
-    _canvas.on.mouseUp.add(_onMouseUp);
-    _canvas.on.mouseMove.add(_onMouseMove);
+    _canvas.onMouseDown.listen(_onMouseDown);
+    _canvas.onMouseUp.listen(_onMouseUp);
+    _canvas.onMouseMove.listen(_onMouseMove);
 
     _context = canvas.getContext("2d");
     clear();
