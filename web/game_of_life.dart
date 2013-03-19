@@ -100,7 +100,7 @@ _zoom(WheelEvent e) {
   gridPresenter.zoom(delta);
 }
 
-Timer _randomStart() => new Timer.repeating(const Duration(milliseconds: 100), (t) {
+Timer _randomStart() => new Timer.periodic(const Duration(milliseconds: 100), (t) {
   Random rand = new Random(new DateTime.now().millisecondsSinceEpoch);
   int cellWidth = gridPresenter.grid.cellWidth;
   int cellHeight = gridPresenter.grid.cellHeight;

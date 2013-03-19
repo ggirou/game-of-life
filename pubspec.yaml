@@ -4,3 +4,6 @@ description:  A sample application
 dependencies:
   browser: any
   unittest: { sdk: unittest }
+
+environment:
+  sdk: "<0.4.3"
