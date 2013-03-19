@@ -3,7 +3,7 @@ description:  A sample application
 
 dependencies:
   browser: any
-  unittest: { sdk: unittest }
+  unittest: "<0.4.3"
 
 environment:
   sdk: "<0.4.3"
