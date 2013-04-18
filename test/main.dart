@@ -1,9 +1,10 @@
-import "game_of_life_test.dart";
-
 import "packages/unittest/unittest.dart";
 import "packages/unittest/mock.dart";
 
+import "engine_test.dart" as engine_test;
+import "generation_test.dart" as generation_test;
+
 main() {
-  group("Generation tests", () => generationTests.forEach(test));
-  group("Engine tests", () => engineTests.forEach(test));
+  engine_test.main();
+  generation_test.main();
 }

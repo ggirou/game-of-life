@@ -31,7 +31,7 @@ class Generation {
     }
   }
 
-  Collection<Cell> get aliveCells => _aliveCells;
-  Collection<Cell> get deadCells => _deadCells;
+  Iterable<Cell> get aliveCells => _aliveCells;
+  Iterable<Cell> get deadCells => _deadCells;
   String toString() => "Generation{aliveCell: $_aliveCells, deadCells: $_deadCells}";
 }

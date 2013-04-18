@@ -3,7 +3,9 @@ description:  A sample application
 
 dependencies:
   browser: any
-  unittest: "<0.4.3"
+
+dev_dependencies:
+  unittest: "<0.4.8"
 
 environment:
-  sdk: "<0.4.3"
+  sdk: "<0.4.8"
