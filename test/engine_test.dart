@@ -72,7 +72,7 @@ main() {
   });
 }
 
-void _testProcessCell(int aliveNeighbours, bool isAlive, [bool checkIsAlive]) {
+void _testProcessCell(int aliveNeighbours, bool isAlive, [bool checkIsAlive = null]) {
   // GIVEN
   Engine engine = new Engine();
   Cell cell = new Cell(0, 0);
@@ -80,7 +80,7 @@ void _testProcessCell(int aliveNeighbours, bool isAlive, [bool checkIsAlive]) {
   GenerationMock currentGenerationMock = new GenerationMock();
   GenerationMock nextGenerationMock = new GenerationMock();
   currentGenerationMock.when(callsTo('aliveNeighbours', cell)).thenReturn(aliveNeighbours);
-  if(?checkIsAlive) {
+  if(checkIsAlive != null) {
     currentGenerationMock.when(callsTo('[]', cell)).thenReturn(checkIsAlive);
   }
   
@@ -89,7 +89,7 @@ void _testProcessCell(int aliveNeighbours, bool isAlive, [bool checkIsAlive]) {
   
   // THEN
   currentGenerationMock.getLogs(callsTo('aliveNeighbours', cell), null, true).verify(happenedOnce);
-  if(?checkIsAlive) {
+  if(checkIsAlive != null) {
     currentGenerationMock.getLogs(callsTo('[]', cell), null, true).verify(happenedOnce);
   }
   currentGenerationMock.getLogs().verify(neverHappened);
