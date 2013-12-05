@@ -1,7 +1,5 @@
 name: game_of_life
 description: A sample application
-environment:
-  sdk: '>=0.6.3'
 dependencies:
   browser: any
 dev_dependencies:

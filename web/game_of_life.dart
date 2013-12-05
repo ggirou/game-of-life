@@ -5,21 +5,22 @@ import '../lib/game_of_life.dart';
 import 'game_of_life_ui.dart';
 
 int lifeTime = 1000;
-DivElement canvasPanel = query("#canvasPanel");
-CanvasElement canvas = query("#canvas");
+DivElement canvasPanel = querySelector("#canvasPanel");
+CanvasElement canvas = querySelector("#canvas");
 GridPresenter gridPresenter = new GridPresenter(new Engine(), new Grid(canvas));
 
-InputElement clearButton = query("#clearButton");
-InputElement randomButton = query("#randomButton");
-InputElement speed = query("#speed");
-SpanElement speedValue = query("#speedValue");
-SpanElement generationValue = query("#generationValue");
-SpanElement cellsValue = query("#cellsValue");
+InputElement clearButton = querySelector("#clearButton");
+InputElement randomButton = querySelector("#randomButton");
+InputElement speed = querySelector("#speed");
+SpanElement speedValue = querySelector("#speedValue");
+SpanElement generationValue = querySelector("#generationValue");
+SpanElement cellsValue = querySelector("#cellsValue");
 
 Timer generationTimer = new Timer(Duration.ZERO, () {});
 
 void main() {
   // FIXME: input range
+  // TODO: Polymer and SVG
   // TODO: localstorage, fileapi, webcomponent
 
   window.onLoad.listen(_autoResizeCanvas);
@@ -78,7 +79,7 @@ onSpeedChange(e) {
     speedValue.text = "${x}x";
   }
 
-  lifeTime = (1000 / x).toInt();
+  lifeTime = 1000 ~/ x;
   animate();
 }
 

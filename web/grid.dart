@@ -105,8 +105,8 @@ class Grid {
   }
 
   _mouseEventToCell(MouseEvent event) {
-    int x = (event.offsetX / cellSize / scale).toInt();
-    int y = (event.offsetY / cellSize / scale).toInt();
+    int x = event.offset.x ~/ (cellSize * scale);
+    int y = event.offset.y ~/ (cellSize * scale);
     return new Cell(x, y);
   }
 
