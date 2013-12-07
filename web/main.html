@@ -1,0 +1,84 @@
+<polymer-element name="x-main">
+  <template>
+    <style>
+      #content {
+        display: table;
+        position: relative;
+        width: 100%; 
+        background-color: #F8F8F8;
+        font-family: 'Open Sans', sans-serif;
+        font-size: 14px;
+        font-weight: normal;
+        line-height: 1.2em;
+        margin: 15px;
+        overflow: hidden;
+        -webkit-user-select: none;
+        user-select: none;
+      }
+      
+      canvas {
+        cursor:default;
+      }
+      
+      p {
+        color: #333;
+      }
+      
+      #title, #infoBar, #canvasPanel {
+        display: table-row;
+        position: relative;
+      }
+      
+      #toolbar {
+        display: table;
+        position: relative;
+        width: 100%;
+        table-layout: fixed;
+      }
+      
+      #title, #infoBar, #toolbar {
+        height: 30px;
+        white-space: nowrap;
+      }
+      
+      #canvasPanel {
+        height: 100%;
+      }
+      
+      #speedPanel, #patternPanel {
+        display: table-cell;
+      }
+      
+      #speedPanel #speed {
+        vertical-align: middle;
+        width: 75%;
+      }
+    </style>
+    <div id="content">
+      <h1 id="title">Conway's Game of Life</h1>
+      <p id="infoBar">
+        Generation: <span id="generationValue"></span>
+        # Cells: <span id="cellsValue"></span>
+        <input id="clearButton" type="button" value="Clear" title="Kill everyone!" />
+        <input id="randomButton" type="button" value="Random" title="Hold random button to create live cells" />
+      </p>
+  
+  	  <div id="toolbar">
+  	    <p id="speedPanel">
+  	      <label for="speed">Speed: </label>
+  	      <input id="speed" type="range" name="Speed" min="-1" max="10" step="1" value="2">
+  	      <span id="speedValue">1x</span>
+  	    </p>
+        <p id="patternPanel">
+          <!-- TODO: pattern -->
+        </p>
+      </div>
+      
+      <div id="canvasPanel">
+        <canvas id="canvas" width="256" height="256"></canvas>
+      </div>
+    </div>
+  </template>
+  <script type="application/dart" src="main.dart"></script>
+</polymer-element>
+

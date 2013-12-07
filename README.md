@@ -5,7 +5,7 @@ Conway's Game of Life written in Dart
 
 Test it!
 --------
-http://ggirou.github.io/game-of-life/
+http://ggirou.github.io/game-of-life/web/
 
 
 ___________________________________________________________________________________________________

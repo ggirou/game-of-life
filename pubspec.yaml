@@ -1,6 +1,6 @@
 name: game_of_life
 description: A sample application
 dependencies:
-  browser: any
+  polymer: any
 dev_dependencies:
   unittest: any
