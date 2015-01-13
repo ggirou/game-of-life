@@ -1,6 +1,6 @@
 library generation_test;
 
-import "packages/unittest/unittest.dart";
+import "package:unittest/unittest.dart";
 
 import "../lib/game_of_life.dart";
 

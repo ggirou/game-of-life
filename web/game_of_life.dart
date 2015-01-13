@@ -1,7 +1,7 @@
 import 'dart:html';
 import 'dart:async';
 import 'dart:math';
-import '../lib/game_of_life.dart';
+import 'package:game_of_life/game_of_life.dart';
 import 'game_of_life_ui.dart';
 
 int lifeTime = 1000;

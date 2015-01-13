@@ -1,7 +1,7 @@
 library engine_test;
 
-import "packages/unittest/unittest.dart";
-import "packages/unittest/mock.dart";
+import "package:unittest/unittest.dart";
+import "package:mock/mock.dart";
 
 import "../lib/game_of_life.dart";
 
