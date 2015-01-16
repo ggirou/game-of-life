@@ -1,0 +1,54 @@
+html, body {height: 100%;}
+
+body {
+  display: table;
+  position: relative;
+  width: 100%; 
+  background-color: #F8F8F8;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.2em;
+  margin: 15px;
+  overflow: hidden;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+canvas {
+  cursor:default;
+}
+
+p {
+  color: #333;
+}
+
+#title, #infoBar, #canvasPanel {
+  display: table-row;
+  position: relative;
+}
+
+#toolbar {
+  display: table;
+  position: relative;
+  width: 100%;
+  table-layout: fixed;
+}
+
+#title, #infoBar, #toolbar {
+  height: 30px;
+  white-space: nowrap;
+}
+
+#canvasPanel {
+  height: 100%;
+}
+
+#speedPanel, #patternPanel {
+  display: table-cell;
+}
+
+#speedPanel #speed {
+  vertical-align: middle;
+  width: 75%;
+}
